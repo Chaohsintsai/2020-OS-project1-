@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
 		exit(0);
 	}
 
-	scheduling(proc, amount, policy);
+	schedule(proc, amount, policy);
 
 	exit(0);
 }

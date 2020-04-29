@@ -9,6 +9,6 @@
 #define PSJF	4
 
 
-int scheduling(struct process *proc, int amount, int policy);
+int schedule(struct process *proc, int amount, int policy);
 
 #endif

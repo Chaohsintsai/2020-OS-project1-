@@ -18,7 +18,7 @@ static int ntime;
 static int running;
 
 
-static int finish_cnt;
+static int finished;
 
 
 int cmp(const void *a, const void *b) {
@@ -73,7 +73,7 @@ int next_process(struct process *proc, int amount, int policy)
 	return ret;
 }
 
-int scheduling(struct process *proc, int amount, int policy)
+int schedule(struct process *proc, int amount, int policy)
 {
 	qsort(proc, amount, sizeof(struct process), cmp);
 
@@ -88,7 +88,7 @@ int scheduling(struct process *proc, int amount, int policy)
 	
 	ntime = 0;
 	running = -1;
-	finish_cnt = 0;
+	finished = 0;
 	
 	while(1) {
 		
@@ -97,9 +97,9 @@ int scheduling(struct process *proc, int amount, int policy)
 
 			waitpid(proc[running].pid, NULL, 0);
 			running = -1;
-			finish_cnt++;
+			finished++;
 
-			if (finish_cnt == amount)
+			if (finished == amount)
 				break;
 		}
 
