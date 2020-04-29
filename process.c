@@ -41,7 +41,6 @@ int exec(struct process proc)
 
 	if (pid == 0) {
 		struct timespec start, end;
-		unsigned long start_sec, start_nsec, end_sec, end_nsec;
 		syscall(GET_TIME, &start);
 		for (int i = 0; i < proc.t_exec; i++) {
 			UNIT_T();
