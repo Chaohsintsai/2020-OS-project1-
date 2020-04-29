@@ -119,8 +119,10 @@ int scheduling(struct process *proc, int amount, int policy)
 		if (next != -1) {
 			// Context switch 
 			if (running != next) {
+				if(running !=-1){
+					block(proc[running].pid);
+				}
 				wakeup(proc[next].pid);
-				block(proc[running].pid);
 				running = next;
 				t_last = ntime;
 			}
