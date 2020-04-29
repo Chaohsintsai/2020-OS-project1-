@@ -108,7 +108,7 @@ int scheduling(struct process *proc, int amount, int policy)
 			if (proc[i].t_ready == ntime) {
 				proc[i].pid = exec(proc[i]);
 				block(proc[i].pid);
-				printf("%s %d\n", proc[running].name, proc[running].pid);
+				printf("%s %d\n", proc[i].name, proc[i].pid);
 				fflush();
 
 			}
