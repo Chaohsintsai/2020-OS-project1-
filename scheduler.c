@@ -109,7 +109,7 @@ int scheduling(struct process *proc, int amount, int policy)
 				proc[i].pid = exec(proc[i]);
 				block(proc[i].pid);
 				printf("%s %d\n", proc[i].name, proc[i].pid);
-				fflush();
+				fflush(stdout);
 
 			}
 
