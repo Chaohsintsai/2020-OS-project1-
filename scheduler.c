@@ -96,8 +96,6 @@ int scheduling(struct process *proc, int amount, int policy)
 		
 
 			waitpid(proc[running].pid, NULL, 0);
-			printf("%s %d\n", proc[running].name, proc[running].pid);
-			fflush();
 			running = -1;
 			finish_cnt++;
 
@@ -110,6 +108,8 @@ int scheduling(struct process *proc, int amount, int policy)
 			if (proc[i].t_ready == ntime) {
 				proc[i].pid = exec(proc[i]);
 				block(proc[i].pid);
+				printf("%s %d\n", proc[running].name, proc[running].pid);
+				fflush();
 
 			}
 
