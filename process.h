@@ -20,16 +20,9 @@ struct process {
 	pid_t pid;
 };
 
-/* Assign process to specific core */
 int assign_cpu(int pid, int core);
-
-/* Execute the process and return pid */
 int exec(struct process proc);
-
-/* Set very low priority tp process */
 int block(int pid);
-
-/* Set high priority to process */
 int wakeup(int pid);
 
 #endif

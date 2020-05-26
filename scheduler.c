@@ -10,14 +10,8 @@
 
 
 static int t_last;
-
-
 static int ntime;
-
-
 static int running;
-
-
 static int finished;
 
 
@@ -29,11 +23,10 @@ int cmp(const void *a, const void *b) {
 int next_process(struct process *proc, int amount, int policy)
 {
 	
-	if (running != -1 && (policy == SJF || policy == FIFO))
+	if (running != -1 && (policy == SJF || policy == FIFO)){
 		return running;
-
+	}
 	int ret = -1;
-
 	if (policy == PSJF || policy ==  SJF) {
 		for (int i = 0; i < amount; i++) {
 			if (proc[i].pid == -1 || proc[i].t_exec == 0)
@@ -42,16 +35,16 @@ int next_process(struct process *proc, int amount, int policy)
 				ret = i;
 		}
 	}
-
 	else if (policy == FIFO) {
 		for(int i = 0; i < amount; i++) {
-			if(proc[i].pid == -1 || proc[i].t_exec == 0)
+			if(proc[i].pid == -1 || proc[i].t_exec == 0){
 				continue;
-			if(ret == -1 || proc[i].t_ready < proc[ret].t_ready)
+			}
+			if(ret == -1 || proc[i].t_ready < proc[ret].t_ready){
 				ret = i;
+			}
 		}
-        }
-
+    }
 	else if (policy == RR) {
 		if (running == -1) {
 			for (int i = 0; i < amount; i++) {
@@ -63,13 +56,13 @@ int next_process(struct process *proc, int amount, int policy)
 		}
 		else if ((ntime - t_last) % 500 == 0)  {
 			ret = (running + 1) % amount;
-			while (proc[ret].pid == -1 || proc[ret].t_exec == 0)
+			while (proc[ret].pid == -1 || proc[ret].t_exec == 0){
 				ret = (ret + 1) % amount;
+			}
 		}
 		else
 			ret = running;
 	}
-
 	return ret;
 }
 
@@ -77,44 +70,31 @@ int schedule(struct process *proc, int amount, int policy)
 {
 	qsort(proc, amount, sizeof(struct process), cmp);
 
-	
-	for (int i = 0; i < amount; i++)
+	for (int i = 0; i < amount; i++){
 		proc[i].pid = -1;
-
-	
+	}
 	assign_cpu(getpid(), PARENT_CPU);
-	
 	wakeup(getpid());
-	
 	ntime = 0;
 	running = -1;
 	finished = 0;
 	
 	while(1) {
-		
 		if (running != -1 && proc[running].t_exec == 0) {
-		
-
 			waitpid(proc[running].pid, NULL, 0);
 			running = -1;
 			finished++;
-
 			if (finished == amount)
 				break;
 		}
-
-
 		for (int i = 0; i < amount; i++) {
 			if (proc[i].t_ready == ntime) {
 				proc[i].pid = exec(proc[i]);
 				block(proc[i].pid);
 				printf("%s %d\n", proc[i].name, proc[i].pid);
 				fflush(stdout);
-
 			}
-
 		}
-
 		int next = next_process(proc, amount, policy);
 		if (next != -1) {
 			// Context switch 
@@ -127,12 +107,10 @@ int schedule(struct process *proc, int amount, int policy)
 				t_last = ntime;
 			}
 		}
-
 		UNIT_T();
 		if (running != -1)
 			proc[running].t_exec--;
 		ntime++;
 	}
-
 	return 0;
 }

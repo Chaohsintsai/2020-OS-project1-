@@ -14,7 +14,6 @@
 int assign_cpu(int pid, int core)
 {
 	if (core > sizeof(cpu_set_t)) {
-		fprintf(stderr, "Core index error.");
 		return -1;
 	}
 
